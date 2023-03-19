@@ -6,7 +6,7 @@ import Home from './components/Home/Home';
 import NotFound from './components/NotFound/NotFound';
 import './App.css';
 
-export class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
       <Routes>

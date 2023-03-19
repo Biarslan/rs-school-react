@@ -11,10 +11,10 @@ export default class Card extends React.Component<ICard> {
         <h5 className={styles.cardTitle}>
           {name}{' '}
           <a href={link} target="_blank" rel="noreferrer">
-            <img src={linkIcon} className={styles.linkIcon} alt="" />
+            <img src={linkIcon} className={styles.linkIcon} />
           </a>
         </h5>
-        <img src={image} className={styles.cardImage} alt="" />
+        <img src={image} className={styles.cardImage} alt={name} />
         <p className={styles.cardDescription}>{description}</p>
         <div className={styles.cardParameters}>
           <span className={styles.cardWeight}>

@@ -9,7 +9,7 @@ export default class Home extends React.Component {
   render() {
     return (
       <div className={styles.test}>
-        <h2 className={styles.title}>Module 1</h2>
+        <h1 className={styles.title}>Module 1</h1>
         <SearchBar />
         <div className={styles.cards}>
           {cardsInfo.map((cardInfo, index) => (
