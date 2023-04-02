@@ -7,17 +7,17 @@ import FormPage from './components/FormPage/FormPage';
 import NotFound from './components/NotFound/NotFound';
 import './App.css';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="form" element={<FormPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    );
-  }
-}
+const App: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="form" element={<FormPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
+  );
+};
+
+export default App;

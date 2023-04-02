@@ -5,18 +5,18 @@ import Card from '../Card/Card';
 
 import cardsInfo from '../../data/cardsInfo';
 
-export default class Home extends React.Component {
-  render() {
-    return (
-      <div className={styles.test}>
-        <h1 className={styles.title}>Module 1</h1>
-        <SearchBar />
-        <div className={styles.cards}>
-          {cardsInfo.map((cardInfo, index) => (
-            <Card key={index} {...cardInfo} />
-          ))}
-        </div>
+const Home: React.FC = () => {
+  return (
+    <div className={styles.test}>
+      <h1 className={styles.title}>Module 1</h1>
+      <SearchBar />
+      <div className={styles.cards}>
+        {cardsInfo.map((cardInfo, index) => (
+          <Card key={index} {...cardInfo} />
+        ))}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
+
+export default Home;

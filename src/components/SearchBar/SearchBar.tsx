@@ -1,33 +1,29 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styles from './index.module.scss';
 import searchIcon from '../../assets/search-icon.svg';
 
-export default class SearchBar extends React.Component {
-  state = {
-    inputValue: localStorage.getItem('inputValue') || '',
-  };
+const SearchBar: React.FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    this.setState({ inputValue: value });
-  };
+  useEffect(() => {
+    const inputCurrent = inputRef.current;
+    return () => {
+      if (inputCurrent !== null) localStorage.setItem('inputValue', inputCurrent.value);
+    };
+  }, []);
 
-  componentWillUnmount() {
-    localStorage.setItem('inputValue', this.state.inputValue);
-  }
+  return (
+    <div className={styles.searchBar}>
+      <input
+        ref={inputRef}
+        style={{ backgroundImage: `url(${searchIcon})` }}
+        placeholder="This info will be stored"
+        className={styles.searchBarInput}
+        type="text"
+        defaultValue={localStorage.getItem('inputValue') || ''}
+      />
+    </div>
+  );
+};
 
-  render() {
-    return (
-      <div className={styles.searchBar}>
-        <input
-          style={{ backgroundImage: `url(${searchIcon})` }}
-          placeholder="This info will be stored"
-          className={styles.searchBarInput}
-          type="text"
-          value={this.state.inputValue}
-          onChange={this.handleChange}
-        />
-      </div>
-    );
-  }
-}
+export default SearchBar;
