@@ -1,0 +1,58 @@
+.title {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 5px;
+  color: black;
+  overflow: hidden;
+  flex-shrink: 0;
+
+  &-title {
+    font-size: 24px;
+    margin: 24px 0;
+    text-align: center;
+  }
+
+  &-image {
+    width: calc(100% - 40px);
+    height: 250px;
+    object-fit: contain;
+    margin-left: 20px;
+  }
+  &-description {
+    padding: 0 20px;
+    font-size: 16px;
+    line-height: 1.2em;
+    margin: 30px 0;
+  }
+  &-parameters {
+    display: flex;
+    width: calc(100% - 40px);
+    padding: 0 20px;
+    margin-bottom: 20px;
+    margin-top: auto;
+  }
+  &-weight,
+  &-height {
+    flex: 1;
+  }
+}
+.bold {
+  font-weight: 600;
+}
+.link {
+  &-icon {
+    height: 1em;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
