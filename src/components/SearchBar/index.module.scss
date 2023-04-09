@@ -5,17 +5,26 @@
   justify-content: center;
   margin-top: 40px;
 
+  &-form {
+    margin: 0 20px;
+    width: calc(100% - 80px);
+    max-width: 640px;
+  }
+
   &-input {
     font-size: 20px;
-    margin: 0 20px;
     height: 50px;
     border-radius: 25px;
     border: 1px solid white;
     padding: 0 20px 0 50px;
-    width: calc(100% - 80px);
-    max-width: 640px;
+    width: 100%;
     background-size: 30px auto;
     background-repeat: no-repeat;
     background-position: 10px 50%;
   }
+}
+
+.error {
+  color: red;
+  text-align: center;
 }

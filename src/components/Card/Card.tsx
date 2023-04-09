@@ -1,25 +1,15 @@
 import React from 'react';
 import styles from './index.module.scss';
-import linkIcon from '../../assets/link-icon.svg';
-import ICard from '../../types/Card';
+import { ICharacter } from '../../types/Character';
 
-const Card: React.FC<ICard> = ({ name, image, description, weight, height, link }) => {
+const Card: React.FC<{ character: ICharacter; onClick: () => void }> = ({ character, onClick }) => {
   return (
-    <div className={styles.card}>
-      <h5 className={styles.cardTitle}>
-        {name}{' '}
-        <a href={link} target="_blank" rel="noreferrer">
-          <img src={linkIcon} className={styles.linkIcon} />
-        </a>
-      </h5>
-      <img src={image} className={styles.cardImage} alt={name} />
-      <p className={styles.cardDescription}>{description}</p>
+    <div className={styles.card} onClick={onClick}>
+      <h5 className={styles.cardTitle}>{character.name}</h5>
+      <img src={character.image} className={styles.cardImage} alt={character.name} />
       <div className={styles.cardParameters}>
-        <span className={styles.cardWeight}>
-          <span className={styles.bold}>Weight:</span> {weight}
-        </span>
-        <span className={styles.cardHeight}>
-          <span className={styles.bold}>Height:</span> {height}
+        <span className={styles.location}>
+          <span className={styles.bold}>Location:</span> {character.location.name}
         </span>
       </div>
     </div>
