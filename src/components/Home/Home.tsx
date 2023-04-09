@@ -4,37 +4,30 @@ import SearchBar from '../SearchBar/SearchBar';
 import Card from '../Card/Card';
 import { ICharacter } from '../../types/Character';
 import CharacterModal from '../CharacterModal/CharacterModal';
-
+import { getCharacters } from '../../services/api';
 const Home: React.FC = () => {
-  const basURL = 'https://rickandmortyapi.com/api/character/?name=';
   const [characters, setCharacters] = useState<ICharacter[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentQuerry, setCurrentQuerry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentCharacter, setCurrentCharacter] = useState<ICharacter | null>(null);
 
-  const submitHandler = (searchQuerry: string) => {
+  const submitHandler = async (searchQuerry: string) => {
     if (isLoading) return;
     if (searchQuerry.trim().length === 0) return;
-    const searchQuerryNormalized = searchQuerry.trim().replaceAll(' ', '%20');
     setCharacters([]);
     setIsLoading(true);
+    const searchQuerryNormalized = searchQuerry.trim().replaceAll(' ', '%20');
     setCurrentQuerry(searchQuerry);
-    fetch(basURL + searchQuerryNormalized)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.results) {
-          setCharacters(data.results);
-        }
-        if (data.error) {
-          setCharacters([]);
-        }
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    try {
+      const fetched = await getCharacters(searchQuerryNormalized);
+      setCharacters(fetched);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsLoading(false);
   };
+
   const handleCardClick = (character: ICharacter) => {
     setIsModalOpen(true);
     setCurrentCharacter(character);
@@ -49,7 +42,7 @@ const Home: React.FC = () => {
       <h1 className={styles.title}>Find characters from Rick and Morty by name</h1>
       <SearchBar disabled={isLoading} submitHandler={submitHandler} />
       {isLoading ? (
-        <div className={styles.loading}></div>
+        <div className={styles.loading} data-testid="loading-indicator"></div>
       ) : (
         <>
           {currentQuerry.length > 0 && (

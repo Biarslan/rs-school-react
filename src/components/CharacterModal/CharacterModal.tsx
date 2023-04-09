@@ -13,6 +13,7 @@ const CharacterModal: React.FC<{ character: ICharacter | null; onClose: () => vo
         if (e.currentTarget !== e.target) return;
         onClose();
       }}
+      data-testid="modal-bg"
     >
       {character && (
         <div className={styles.modalInfo}>

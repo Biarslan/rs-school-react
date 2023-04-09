@@ -38,6 +38,7 @@ const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: str
           e.preventDefault();
           handleSubmit();
         }}
+        data-testid="search-form"
       >
         <input
           ref={inputRef}
@@ -48,10 +49,13 @@ const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: str
           disabled={disabled}
           defaultValue={localStorage.getItem('inputValue') || 'Smith'}
         />
-        {haveErrors && (
-          <p className={styles.error}>Input should not be empty and contain only latin letters.</p>
-        )}
+        <button className={styles.searchBarButton} type="submit">
+          Search
+        </button>
       </form>
+      {haveErrors && (
+        <p className={styles.error}>Input should not be empty and contain only latin letters.</p>
+      )}
     </div>
   );
 };
