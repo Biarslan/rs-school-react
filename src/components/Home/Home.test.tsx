@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, act, waitForElementToBeRemoved } from '@testing-library/react';
 import Home from './Home';
-import { describe, it } from 'vitest';
-// import { getCharacters } from '../../services/api';
+import { describe, it, vi } from 'vitest';
+import { getCharacters } from '../../services/api';
 // import { ICharacter } from '../../types/Character';
 
 // vi.mock('../../services/api');
@@ -39,11 +39,34 @@ import { describe, it } from 'vitest';
 //     created: '',
 //   },
 // ];
+vi.mock('../../services/api', () => ({
+  getCharacters: vi.fn(),
+}));
 
+const mockCharacter = {
+  id: 1,
+  name: 'Rick Sanchez',
+  status: 'Alive',
+  species: 'Human',
+  type: '',
+  gender: 'Male',
+  origin: {
+    name: 'Earth (C-137)',
+    url: 'https://rickandmortyapi.com/api/location/1',
+  },
+  location: {
+    name: 'Earth (Replacement Dimension)',
+    url: 'https://rickandmortyapi.com/api/location/20',
+  },
+  image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
+  episode: [
+    'https://rickandmortyapi.com/api/episode/1',
+    'https://rickandmortyapi.com/api/episode/2',
+  ],
+  url: 'https://rickandmortyapi.com/api/character/1',
+  created: '2017-11-04T18:48:46.250Z',
+};
 describe('Home', () => {
-  // beforeEach(() => {
-  //   vi.clearAllMocks();
-  // });
   it('Renders heading', () => {
     render(<Home />);
 
@@ -61,48 +84,66 @@ describe('Home', () => {
     expect(searchButton).toBeInTheDocument();
   });
 
-  // it('should display search results when API call returns successfully', async () => {
-  //   const { getByTestId, findByTestId, getByPlaceholderText, getByText } = render(<Home />);
+  it('should display search results when API call returns successfully', async () => {
+    (getCharacters as jest.Mock).mockResolvedValue([mockCharacter]);
 
-  //   const searchBar = getByPlaceholderText('E.g. Rick / Morty / Smith');
-  //   const searchButton = getByText('Search');
-  //   await fireEvent.change(searchBar, { target: { value: 'Rick' } });
-  //   mockedGetCharacters.mockResolvedValueOnce(() => mockCharacters);
-  //   fireEvent.submit(await findByTestId('search-form'));
-  //   expect(searchButton).toBeInTheDocument();
-  //   await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
-  //   await waitForElementToBeRemoved(() => getByTestId('loading-indicator2'));
-  //   const card = findByTestId('card');
-  //   expect(getCharacters).toHaveBeenCalledWith('Rick');
-  //   expect(card).toBeInTheDocument();
-  // });
+    render(<Home />);
+    const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
+    await act(async () => {
+      await fireEvent.change(searchBar, { target: { defaultValue: 'Rick', value: 'Rick' } });
+      await fireEvent.submit(screen.getByTestId('search-form'));
+    });
 
-  // it('should display error message when API call returns an error', async () => {
-  //   mockedGetCharacters.mockImplementation(() =>
-  //     Promise.reject(new Error('There is nothing here'))
-  //   );
-  //   const { getByTestId, findByText, getByPlaceholderText, getByText } = render(<Home />);
-  //   const searchBar = getByPlaceholderText('E.g. Rick / Morty / Smith');
-  //   const searchButton = getByText('Search');
-  //   fireEvent.change(searchBar, { target: { value: 'BillGates' } });
-  //   fireEvent.click(searchButton);
-  //   await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
-  //   const errorMessage = await findByText('There is no matches for your request');
-  //   expect(getCharacters).toHaveBeenCalledWith('BillGates');
-  //   expect(errorMessage).toBeInTheDocument();
-  // });
+    const card = await screen.findByText('Rick Sanchez');
+    expect(card).toBeInTheDocument();
+  });
 
-  // it('should display character modal when a card is clicked', async () => {
-  //   mockedGetCharacters.mockImplementation(() => Promise.resolve(mockCharacters));
-  //   const { getByTestId, findByTestId, getByPlaceholderText, getByText } = render(<Home />);
-  //   const searchBar = getByPlaceholderText('E.g. Rick / Morty / Smith');
-  //   const searchButton = getByText('Search');
-  //   fireEvent.change(searchBar, { target: { value: 'Rick' } });
-  //   fireEvent.click(searchButton);
-  //   await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
-  //   const card = await findByTestId('card');
-  //   fireEvent.click(card);
-  //   const modalBg = await findByTestId('modal-bg');
-  //   expect(modalBg).toBeInTheDocument();
-  // });
+  it('should display "Nothing found message" an error', async () => {
+    (getCharacters as jest.Mock).mockResolvedValue(new Error('There is nothing here'));
+    render(<Home />);
+    const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
+    await act(async () => {
+      await fireEvent.change(searchBar, {
+        target: { defaultValue: 'BillGates', value: 'BillGates' },
+      });
+      await fireEvent.submit(screen.getByTestId('search-form'));
+    });
+    const errorMessage = await screen.findByText('There is no matches for your request');
+    expect(errorMessage).toBeInTheDocument();
+  });
+
+  it('should display character modal when a card is clicked', async () => {
+    (getCharacters as jest.Mock).mockResolvedValue([mockCharacter]);
+    render(<Home />);
+    const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
+    await act(async () => {
+      await fireEvent.change(searchBar, { target: { defaultValue: 'Rick', value: 'Rick' } });
+      await fireEvent.submit(screen.getByTestId('search-form'));
+    });
+    const card = await screen.findByText('Rick Sanchez');
+    expect(card).toBeInTheDocument();
+    fireEvent.click(card);
+    const modalBg = await screen.findByTestId('modal-bg');
+    expect(modalBg).toBeInTheDocument();
+  });
+
+  it('should display and close character modal when a card is clicked', async () => {
+    (getCharacters as jest.Mock).mockResolvedValue([mockCharacter]);
+    render(<Home />);
+    const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
+    await act(async () => {
+      await fireEvent.change(searchBar, { target: { defaultValue: 'Rick', value: 'Rick' } });
+      await fireEvent.submit(screen.getByTestId('search-form'));
+    });
+    const card = await screen.findByText('Rick Sanchez');
+    expect(card).toBeInTheDocument();
+    fireEvent.click(card);
+    const modalBg = await screen.findByTestId('modal-bg');
+    expect(modalBg).toBeInTheDocument();
+
+    await act(async () => {
+      await fireEvent.click(modalBg);
+    });
+    expect(modalBg).not.toBeInTheDocument();
+  });
 });

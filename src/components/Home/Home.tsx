@@ -22,9 +22,7 @@ const Home: React.FC = () => {
     try {
       const fetched = await getCharacters(searchQuerryNormalized);
       setCharacters(fetched);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
     setIsLoading(false);
   };
 
