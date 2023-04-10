@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, act, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import Home from './Home';
 import { describe, it, vi } from 'vitest';
 import { getCharacters } from '../../services/api';
