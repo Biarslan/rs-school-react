@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './index.module.scss';
-import { IFormData } from './utils';
-import { IFormCard } from '../FormCard/FormCard';
+import { IFormCard, IFormData } from '../../types/Form';
 
 const Form: React.FC<{ onFormSubmit: (formData: IFormCard) => void }> = ({ onFormSubmit }) => {
   const [previewImage, setPreviewImage] = useState<string | undefined>(undefined);

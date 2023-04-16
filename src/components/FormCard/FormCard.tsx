@@ -1,14 +1,6 @@
 import React from 'react';
 import styles from './index.module.scss';
-
-export interface IFormCard {
-  name: string;
-  date: number;
-  sex: string;
-  isReactLiked: boolean;
-  language: string;
-  image: string;
-}
+import { IFormCard } from '../../types/Form';
 
 const FormCard: React.FC<IFormCard> = ({ name, image, date, language, sex, isReactLiked }) => {
   return (

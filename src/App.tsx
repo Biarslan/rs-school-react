@@ -1,10 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
-import About from './components/About/About';
-import Home from './components/Home/Home';
-import FormPage from './components/FormPage/FormPage';
-import NotFound from './components/NotFound/NotFound';
+import About from './pages/About/About';
+import Home from './pages/Home/Home';
+import FormPage from './pages/FormPage/FormPage';
+import NotFound from './pages/NotFound/NotFound';
 import './App.css';
 
 const App: React.FC = () => {

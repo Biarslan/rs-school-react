@@ -6,3 +6,12 @@ export interface IFormData {
   sex: string;
   image: FileList;
 }
+
+export interface IFormCard {
+  name: string;
+  date: number;
+  sex: string;
+  isReactLiked: boolean;
+  language: string;
+  image: string;
+}

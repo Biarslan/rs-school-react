@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './index.module.scss';
 import searchIcon from '../../assets/search-icon.svg';
+import { update } from '../../feature/search/search-slice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: string) => void }> = ({
   disabled,
@@ -10,6 +12,8 @@ const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: str
   const inputRef = useRef<HTMLInputElement>(null);
   const [isInited, setIsInited] = useState(false);
 
+  const searchStoredValue = useAppSelector((state) => state.search.value);
+  const dispatch = useAppDispatch();
   const handleSubmit = () => {
     const inputCurrent = inputRef.current;
     if (inputCurrent !== null) {
@@ -20,15 +24,15 @@ const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: str
         return;
       }
       setHaveErros(false);
-      localStorage.setItem('inputValue', inputCurrent.value);
+      dispatch(update(inputCurrent.value));
       submitHandler(inputCurrent.value);
     }
   };
   useEffect(() => {
     if (isInited) return;
-    submitHandler(localStorage.getItem('inputValue') || 'Smith');
     setIsInited(true);
-  }, [submitHandler, isInited]);
+    submitHandler(searchStoredValue || 'Smith');
+  }, [submitHandler, isInited, searchStoredValue]);
 
   return (
     <div className={styles.searchBar}>
@@ -47,7 +51,7 @@ const SearchBar: React.FC<{ disabled: boolean; submitHandler: (searchQuerry: str
           className={styles.searchBarInput}
           type="text"
           disabled={disabled}
-          defaultValue={localStorage.getItem('inputValue') || 'Smith'}
+          defaultValue={searchStoredValue || 'Smith'}
         />
         <button className={styles.searchBarButton} type="submit">
           Search

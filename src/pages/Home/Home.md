@@ -3,42 +3,7 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import Home from './Home';
 import { describe, it, vi } from 'vitest';
 import { getCharacters } from '../../services/api';
-// import { ICharacter } from '../../types/Character';
 
-// vi.mock('../../services/api');
-
-// const mockedGetCharacters = getCharacters as vi.MockedFunction<typeof getCharacters>;
-
-// const mockCharacters: ICharacter[] = [
-//   {
-//     id: 1,
-//     name: 'Rick Sanchez',
-//     status: 'Alive',
-//     species: 'Human',
-//     type: '',
-//     gender: 'Male',
-//     origin: { name: 'Earth', url: '' },
-//     location: { name: 'Earth', url: '' },
-//     image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg',
-//     episode: [],
-//     url: '',
-//     created: '',
-//   },
-//   {
-//     id: 2,
-//     name: 'Morty Smith',
-//     status: 'Alive',
-//     species: 'Human',
-//     type: '',
-//     gender: 'Male',
-//     origin: { name: 'Earth', url: '' },
-//     location: { name: 'Earth', url: '' },
-//     image: 'https://rickandmortyapi.com/api/character/avatar/2.jpeg',
-//     episode: [],
-//     url: '',
-//     created: '',
-//   },
-// ];
 vi.mock('../../services/api', () => ({
   getCharacters: vi.fn(),
 }));
