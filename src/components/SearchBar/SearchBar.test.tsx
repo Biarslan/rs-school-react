@@ -7,7 +7,6 @@ import { renderWithProviders } from '../../utils/test-utils';
 describe('SearchBar', () => {
   it('should render input field and search button', () => {
     renderWithProviders(<SearchBar disabled={false} submitHandler={() => {}} />);
-    // const { getByPlaceholderText, getByText } = render();
     const input = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
     const button = screen.getByText('Search');
     expect(input).toBeInTheDocument();

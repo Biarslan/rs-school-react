@@ -47,7 +47,7 @@ describe('Card', () => {
 
     const birthField = screen.getByText('Birth date:').parentElement;
     expect(birthField).toBeInTheDocument();
-    expect(birthField).toHaveTextContent('1/1/1970');
+    expect(birthField).toHaveTextContent('Birth date: 1/1/1970');
 
     const heightField = screen.getByText('Sex:').parentElement;
     expect(heightField).toBeInTheDocument();
@@ -60,10 +60,6 @@ describe('Card', () => {
     expect(
       screen.getByText(/Favourite language is Visual Basic *Likes ReactJS/)
     ).toBeInTheDocument();
-
-    const birthField = screen.getByText('Birth date:').parentElement;
-    expect(birthField).toBeInTheDocument();
-    expect(birthField).toHaveTextContent('1/1/1970');
 
     const heightField = screen.getByText('Sex:').parentElement;
     expect(heightField).toBeInTheDocument();

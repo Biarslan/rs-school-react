@@ -79,7 +79,9 @@ const Form: React.FC<{ onFormSubmit: (formData: IFormCard) => void }> = ({ onFor
         Likes ReactJS
       </label>
 
-      <label className={styles.label}>Sex* :</label>
+      <label htmlFor="sex" className={styles.label}>
+        Sex* :
+      </label>
 
       <div className={styles.sexInput}>
         <label className={styles.labelRadio} htmlFor="sexMale">

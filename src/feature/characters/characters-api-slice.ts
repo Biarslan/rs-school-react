@@ -1,17 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ICharacter } from 'types/Character';
+
 import { updateCharacterList } from '../search-results/search-results-slice';
-
-interface IAPIResponse {
-  info: {
-    count: number | null;
-    pages: number | null;
-    next: string | null;
-    prev: string | null;
-  };
-  results: ICharacter[];
-}
-
+import { IAPIResponse } from '../../types/api';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({

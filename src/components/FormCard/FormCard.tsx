@@ -19,7 +19,8 @@ const FormCard: React.FC<IFormCard> = ({ name, image, date, language, sex, isRea
           <span className={styles.bold}>Sex:</span> {sex === 'other' ? 'Other 🤔' : sex}
         </span>
         <span className={styles.cardHeight}>
-          <span className={styles.bold}>Birth date:</span> {new Date(date).toLocaleDateString()}
+          <span className={styles.bold}>Birth date:</span>{' '}
+          {new Date(date).toLocaleDateString('en-US')}
         </span>
       </div>
     </div>
