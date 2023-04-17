@@ -120,7 +120,7 @@ const Form: React.FC<{ onFormSubmit: (formData: IFormCard) => void }> = ({ onFor
         Upload photo* :
       </label>
       <input
-        {...register('image', { validate: (value) => value.length > 0 })}
+        {...register('image', { validate: (files) => files.length > 0 })}
         type="file"
         id="image"
         name="image"
@@ -129,7 +129,9 @@ const Form: React.FC<{ onFormSubmit: (formData: IFormCard) => void }> = ({ onFor
         onChange={handleChangeImage}
       />
       {errors.image && <span className={styles.error}>Please upload image</span>}
-      {previewImage && <img className={styles.previewImage} src={previewImage} alt="img" />}
+      {previewImage && (
+        <img className={styles.previewImage} src={previewImage} alt="previewImage" />
+      )}
       <button className={styles.submitButton} type="submit">
         Submit
       </button>
