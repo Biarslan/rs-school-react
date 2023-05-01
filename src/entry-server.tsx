@@ -4,12 +4,21 @@ import { StaticRouter } from 'react-router-dom/server';
 import { Provider } from 'react-redux';
 import { setupStore } from './app/store';
 import { apiServerSlice } from './app/serverApi';
+import { ICharacter } from './types/Character';
 import App from './App';
 
-export async function render(url: string, options?: object) {
+export interface IRender {
+  (url: string, options?: ReactDOMServer.RenderToPipeableStreamOptions): Promise<{
+    stream: ReactDOMServer.PipeableStream;
+    prefetchedChars: ICharacter[];
+  }>;
+}
+
+export const render: IRender = async (url, options) => {
   const store = setupStore();
-  const prefetchedChars = (await store.dispatch(apiServerSlice.endpoints.getAllChars.initiate('')))
-    .data.results;
+  const prefetchedChars: ICharacter[] = (
+    await store.dispatch(apiServerSlice.endpoints.getAllChars.initiate(''))
+  ).data.results;
 
   const stream = ReactDOMServer.renderToPipeableStream(
     <StaticRouter location={url}>
@@ -21,4 +30,4 @@ export async function render(url: string, options?: object) {
   );
 
   return { stream, prefetchedChars };
-}
+};

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server",
+    "dev": "ts-node --esm server",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build --ssrManifest --outDir dist/client",
     "build:server": "vite build --ssr src/entry-server.tsx --outDir dist/server",
@@ -14,7 +14,7 @@
     "test:prep": "npm run test:clean && npx nyc instrument --compact=false src instrumented",
     "test:e2e": "npm run test:prep && npx cypress run --e2e && npx nyc report && npx nyc report --reporter=text-summary",
     "test:clean": "npx rimraf coverage && npx rimraf .nyc_output && npx rimraf instrumented",
-    "test:unit": "vitest run --coverage"
+    "test:unit": "npm run test:clean && vitest run --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
@@ -59,6 +59,7 @@
     "prettier": "^2.8.4",
     "sass": "^1.59.3",
     "start-server-and-test": "^2.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
     "vite-plugin-istanbul": "^4.0.1",
