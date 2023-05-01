@@ -11,14 +11,16 @@
     "preview": "cross-env NODE_ENV=production node server",
     "lint": "eslint src",
     "test": "vitest",
-    "test:cypress": "cypress open",
-    "coverage": "vitest run --coverage",
-    "test:debug": "vitest --inspect-brk --single-thread"
+    "test:prep": "npm run test:clean && npx nyc instrument --compact=false src instrumented",
+    "test:e2e": "npm run test:prep && npx cypress run --e2e && npx nyc report && npx nyc report --reporter=text-summary",
+    "test:clean": "npx rimraf coverage && npx rimraf .nyc_output && npx rimraf instrumented",
+    "test:unit": "vitest run --coverage"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "compression": "^1.7.4",
     "cross-fetch": "^3.1.5",
+    "cypress": "^12.11.0",
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -41,7 +43,7 @@
     "@vitejs/plugin-react": "^3.1.0",
     "@vitest/coverage-c8": "^0.29.3",
     "cross-env": "^7.0.3",
-    "cypress": "^12.11.0",
+    "cypress-vite": "^1.4.0",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-import-resolver-typescript": "^3.5.3",
@@ -56,9 +58,17 @@
     "nyc": "^15.1.0",
     "prettier": "^2.8.4",
     "sass": "^1.59.3",
+    "start-server-and-test": "^2.0.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
+    "vite-plugin-istanbul": "^4.0.1",
     "vitest": "^0.29.3",
     "whatwg-fetch": "^3.6.2"
+  },
+  "nyc": {
+    "exclude": [
+      "cypress/**/*",
+      "**/*.test.tsx"
+    ]
   }
 }
