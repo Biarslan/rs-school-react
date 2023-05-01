@@ -1,26 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import Card from '../../components/Card/Card';
 import CharacterModal from '../../components/CharacterModal/CharacterModal';
 import { ICharacter } from '../../types/Character';
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { useFetchCharactersQuery } from '../../feature/characters/characters-api-slice';
+import { updateCharacterList } from '../../feature/search-results/search-results-slice';
 
 const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
   const characters = useAppSelector((store) => store.searchResults.value);
   const [currentQuerry, setCurrentQuerry] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSkipping, setIsSkipping] = useState(true);
   const [currentCharacter, setCurrentCharacter] = useState<ICharacter | null>(null);
-  const [searchQueryValue, setSearchQueryValue] = useState('Smith');
-  const { isFetching, isLoading } = useFetchCharactersQuery(searchQueryValue);
+  const [searchQueryValue, setSearchQueryValue] = useState('');
+  const { data, isFetching, isLoading } = useFetchCharactersQuery(searchQueryValue, {
+    skip: isSkipping,
+  });
 
   const submitHandler = async (searchQuery: string) => {
-    if (isFetching || isLoading || searchQuery.trim().length === 0) return;
+    if (isFetching || isLoading) return;
+    setIsSkipping(false);
     const searchQuerryNormalized = searchQuery.trim().replaceAll(' ', '%20');
     setCurrentQuerry(searchQuery);
     setSearchQueryValue(searchQuerryNormalized);
   };
+  useEffect(() => {
+    if (data !== undefined) {
+      dispatch(updateCharacterList(data.results));
+    }
+  }, [dispatch, data]);
 
   const handleCardClick = (character: ICharacter) => {
     setIsModalOpen(true);

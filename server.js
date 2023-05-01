@@ -36,7 +36,6 @@ if (!isProduction) {
 app.use('*', async (req, res) => {
   try {
     const url = req.originalUrl.replace(base, '');
-    console.log(url);
     let template;
     let render;
     if (!isProduction) {
@@ -52,7 +51,11 @@ app.use('*', async (req, res) => {
 
     const html = template
       .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '');
+      .replace(`<!--app-html-->`, rendered.html ?? '')
+      .replace(
+        `<!--app-initial-state-->`,
+        `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(rendered.prefetchedChars)}</script>`
+      );
 
     res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {

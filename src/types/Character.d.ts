@@ -17,3 +17,9 @@ export interface ICharacter {
   image: string;
   episode: string[];
 }
+
+declare global {
+  interface Window {
+    __PRELOADED_STATE__: ICharacter[];
+  }
+}

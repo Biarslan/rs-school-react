@@ -6,8 +6,7 @@ import { setupStore } from './app/store';
 import App from './App';
 import './index.css';
 
-// const store = setupStore(window.__PRELOADED_STATE__);
-const store = setupStore();
+const store = setupStore({ searchResults: { value: window.__PRELOADED_STATE__ } });
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,

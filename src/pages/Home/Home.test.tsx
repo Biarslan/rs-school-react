@@ -55,11 +55,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       store,
     });
-    const preloader = await screen.getByTestId('loading-indicator');
 
-    await waitFor(() => {
-      expect(preloader).not.toBeInTheDocument();
-    });
     const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
     await fireEvent.change(searchBar, {
       target: { defaultValue: 'TestTest', value: 'TestTest' },
@@ -74,11 +70,7 @@ describe('Home', () => {
     renderWithProviders(<Home />, {
       store,
     });
-    const preloader = await screen.getByTestId('loading-indicator');
 
-    await waitFor(() => {
-      expect(preloader).not.toBeInTheDocument();
-    });
     const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
 
     await fireEvent.change(searchBar, {
@@ -96,8 +88,14 @@ describe('Home', () => {
     const store = setupStore();
     renderWithProviders(<Home />, {
       store,
-      preloadedState: { searchResults: { value: [testCharacter] } },
     });
+
+    const searchBar = screen.getByPlaceholderText('E.g. Rick / Morty / Smith');
+
+    await fireEvent.change(searchBar, {
+      target: { defaultValue: 'Rick', value: 'Rick' },
+    });
+    await fireEvent.submit(screen.getByTestId('search-form'));
     const card = await screen.findByText('Rick Sanchez');
     expect(card).toBeInTheDocument();
     fireEvent.click(card);
