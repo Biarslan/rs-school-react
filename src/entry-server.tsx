@@ -6,18 +6,19 @@ import { setupStore } from './app/store';
 import { apiServerSlice } from './app/serverApi';
 import App from './App';
 
-export async function render(url: string) {
+export async function render(url: string, options?: object) {
   const store = setupStore();
   const prefetchedChars = (await store.dispatch(apiServerSlice.endpoints.getAllChars.initiate('')))
     .data.results;
 
-  const html = ReactDOMServer.renderToString(
+  const stream = ReactDOMServer.renderToPipeableStream(
     <StaticRouter location={url}>
       <Provider store={store}>
         <App />
       </Provider>
-    </StaticRouter>
+    </StaticRouter>,
+    options
   );
 
-  return { html, prefetchedChars };
+  return { stream, prefetchedChars };
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, fireEvent, act, waitFor } from '@testing-library/react';
+import { screen, fireEvent, act } from '@testing-library/react';
 import Home from './Home';
 import { describe, it } from 'vitest';
 import { renderWithProviders } from '../../utils/test-utils';

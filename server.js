@@ -47,21 +47,22 @@ app.use('*', async (req, res) => {
       template = templateHtml;
       render = (await import('./dist/server/entry-server.js')).render;
     }
-    const rendered = await render('/' + url, ssrManifest);
-
-    const html = template
-      .replace(`<!--app-head-->`, rendered.head ?? '')
-      .replace(`<!--app-html-->`, rendered.html ?? '')
-      .replace(
-        `<!--app-initial-state-->`,
-        `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(rendered.prefetchedChars)}</script>`
-      );
-
-    res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    // const rendered = await render('/' + url, ssrManifest);
+    const { stream, prefetchedChars } = await render('/' + url, {
+      onAllReady() {
+        const html = template.replace(
+          `<!--app-initial-state-->`,
+          `<script>window.__PRELOADED_STATE__ = ${JSON.stringify(prefetchedChars)}</script>`
+        );
+        const parts = html.split('<!--app-html-->');
+        res.write(parts[0]);
+        stream.pipe(res);
+        res.write(parts[1]);
+        res.end();
+      },
+    });
   } catch (e) {
-    vite?.ssrFixStacktrace(e);
-    console.log(e.stack);
-    res.status(500).end(e.stack);
+    console.log(e);
   }
 });
 
