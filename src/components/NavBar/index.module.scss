@@ -1,0 +1,24 @@
+.navbar {
+  width: 100%;
+  height: 60px;
+  background-color: #373737;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  &-link {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 0 20px;
+    color: #fff;
+
+    &:hover,
+    &-active {
+      background-color: #fff;
+      color: #373737;
+    }
+  }
+}
